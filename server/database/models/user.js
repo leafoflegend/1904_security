@@ -25,8 +25,23 @@ const User = db.define(
       beforeCreate: user => {
         user.password = hash(user.password);
       },
+      beforeUpdate: user => {
+        // compare the prev user to the cur user and ensure that they did in fact change the password
+        // if they did, rehash the password
+        // otherwise dont.
+        // if you accidentally rehash the password when they updated their email
+      },
     }
   },
 );
+
+User.login = function (username, password) {
+  return this.findOne({
+    where: {
+      username,
+      password: hash(password),
+    },
+  });
+};
 
 module.exports = User;

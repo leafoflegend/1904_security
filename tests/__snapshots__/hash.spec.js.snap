@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hash Function Given a string, hashes the string. 1`] = `"224194230230238222228200"`;

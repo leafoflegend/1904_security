@@ -5,6 +5,7 @@ const { UniqueConstraintError } = require('sequelize');
 const cookieParser = require('cookie-parser');
 const crypto = require('crypto');
 const { models } = require('./database/index');
+const hash = require('./database/utils/hash.js');
 
 const { User, Session } = models;
 
@@ -16,7 +17,7 @@ const app = express();
 
 const publicPath = path.join(__dirname, './public');
 
-const hash = () =>
+const createGUID = () =>
   new Promise((res, rej) => {
     crypto.randomBytes(256, (err, buf) => {
       if (err) rej(err);
@@ -105,7 +106,7 @@ app.post('/api/login', async (req, res) => {
     const [session, wasCreated] = await Session.findOrCreate({
       where: { userId: user.id },
       defaults: {
-        sessionId: await hash(),
+        sessionId: await createGUID(),
       },
     });
 
